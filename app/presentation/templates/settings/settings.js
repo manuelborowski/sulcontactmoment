@@ -1,15 +1,16 @@
 $(document).ready(function () {
-        socketio.subscribe_on_receive("settings", socketio_receive_settings);
-        Formio.createForm(document.getElementById('configuration-settings'), settings_form).then((form) => {
-        $.each(default_settings, function (k, v){
+    socketio.start(null, null);
+    socketio.subscribe_on_receive("settings", socketio_receive_settings);
+    Formio.createForm(document.getElementById('configuration-settings'), settings_form).then((form) => {
+        $.each(default_settings, function (k, v) {
             try {
                 form.getComponent(k).setValue(v);
-            } catch (error ) {
+            } catch (error) {
                 return;
             }
         });
         form.on('change', function (changed) {
-            socketio_transmit_setting(changed.changed.component.key ,changed.changed.value)
+            socketio_transmit_setting(changed.changed.component.key, changed.changed.value)
         });
     });
 });

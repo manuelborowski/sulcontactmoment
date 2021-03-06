@@ -11,6 +11,11 @@ def data_done():
     db.session.commit()
 
 
+def datetime_to_formiodate(date):
+    string = f"{datetime.datetime.strftime(date, '%Y-%m-%dT%H:%M')}:00+01:00"
+    return string
+
+
 def raise_error(message, details=None):
     error = Exception(f'm({message}), d({details}), td({type(details).__name__})')
     raise error

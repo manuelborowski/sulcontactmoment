@@ -1,5 +1,4 @@
 from app import flask_app, log
-from app.data import visit as mvisit
 import datetime
 
 def execute_test(args):
@@ -12,12 +11,8 @@ def execute_test(args):
             test?umagbinnen=delay: test gebruiker (umagbinnen), timeslot wordt gezet op NU + delay<br> 
             '''
         if test_code in args:
-            visit = mvisit.get_first_visit(code=test_code)
-            delay = int(args[test_code])
-            timeslot = datetime.datetime.now() + datetime.timedelta(seconds=delay)
-            log.info(f'test ({test_code}/{timeslot})')
-            mvisit.update_visit(visit, timeslot=timeslot)
-        return f'test ({test_code}/{timeslot})'
+            pass
+            return f'test ({test_code})'
     except Exception as e:
         log.error(f'test: could not do test {args}: {e}')
     return f'sorry, niet gelukt'

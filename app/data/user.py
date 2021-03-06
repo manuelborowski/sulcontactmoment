@@ -35,7 +35,7 @@ def search_data(search_string):
 def format_data(db_list):
     out = []
     for i in db_list:
-        em = i.ret_dict()
+        em = i.ret_datatable()
         em['row_action'] = f"{i.id}"
         out.append(em)
     return out
