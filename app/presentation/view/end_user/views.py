@@ -25,7 +25,7 @@ def register():
             return render_template('end_user/register.html', data=ret.result,
                                    registration_endpoint = 'end_user.register_save')
         else:
-            return redirect(f'{flask_app.config["SMARTSCHOOL_OAUTH_SERVER"]}?app_uri={flask_app.config["SMARTSCHOOL_OAUTH_SERVER"]}')
+            return redirect(f'{flask_app.config["SMARTSCHOOL_OAUTH_SERVER"]}?app_uri={flask_app.config["SMARTSCHOOL_OUATH_REDIRECT_URI"]}')
     except Exception as e:
         log.error(f'could not register {request.args}: {e}')
         return render_template('end_user/messages.html', type='error', info=e)
