@@ -1,14 +1,14 @@
 server {
-    listen 5020;
-    server_name www.infodemol.be;
+    listen 5000;
+    server_name https://scm.ict.campussintursula.be;
 
     location / {
         include proxy_params;
-        proxy_pass http://127.0.0.1:5120;
+        proxy_pass http://127.0.0.1:5024;
     }
 
     location /static {
-        alias /home/aboro/projects/infodemol/app/static;
+        alias /home/aboro/projects/sulcontactmoment/app/static;
         expires 30d;
     }
 
@@ -18,12 +18,6 @@ server {
         proxy_buffering off;
         proxy_set_header Upgrade $http_upgrade;
         proxy_set_header Connection "Upgrade";
-        proxy_pass http://127.0.0.1:5120/socket.io;
+        proxy_pass http://127.0.0.1:5024/socket.io;
     }
-}
-
-server {
-    listen 80;
-    server_name www.infodemol.be;
-    return 301 https://www.infodemol.be$request_uri;
 }
