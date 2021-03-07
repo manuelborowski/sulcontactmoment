@@ -1,6 +1,6 @@
-from flask import render_template, request, redirect, app
+from flask import render_template, request, redirect
 from . import end_user
-from app import log, socketio
+from app import log, socketio, flask_app
 import json, re
 from app.presentation.view import prepare_registration_form
 from app.application import register as mregister
@@ -25,10 +25,10 @@ def register():
             return render_template('end_user/register.html', data=ret.result,
                                    registration_endpoint = 'end_user.register_save')
         else:
-            return redirect(f'{app.config["SMARTSCHOOL_OAUTH_SERVER"]}?app_uri={app.config["SMARTSCHOOL_OAUTH_SERVER"]}')
+            return redirect(f'{flask_app.config["SMARTSCHOOL_OAUTH_SERVER"]}?app_uri={flask_app.config["SMARTSCHOOL_OAUTH_SERVER"]}')
     except Exception as e:
         log.error(f'could not register {request.args}: {e}')
-        return render_template('end_user/messages.html', type='error', message=e)
+        return render_template('end_user/messages.html', type='error', info=e)
 
 
 @end_user.route('/register_save', methods=['POST', 'GET'])
