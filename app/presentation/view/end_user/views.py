@@ -1,4 +1,4 @@
-from flask import render_template, request, redirect
+from flask import render_template, request, redirect, app
 from . import end_user
 from app import log, socketio
 import json, re
@@ -25,7 +25,7 @@ def register():
             return render_template('end_user/register.html', data=ret.result,
                                    registration_endpoint = 'end_user.register_save')
         else:
-            return redirect('https://auth.ict.campussintursula.be?app_uri=https://generic.test.campussintursula.be/register')
+            return redirect(f'{app.config["SMARTSCHOOL_OAUTH_SERVER"]}?app_uri={app.config["SMARTSCHOOL_OAUTH_SERVER"]}')
     except Exception as e:
         log.error(f'could not register {request.args}: {e}')
         return render_template('end_user/messages.html', type='error', message=e)
