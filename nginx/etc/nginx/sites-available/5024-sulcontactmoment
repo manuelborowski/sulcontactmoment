@@ -21,3 +21,9 @@ server {
         proxy_pass http://127.0.0.1:5024/socket.io;
     }
 }
+
+server {
+    listen 80;
+    server_name https://scm.ict.campussintursula.be;
+    return 301 https://scm.ict.campussintursula.be$request_uri;
+}
