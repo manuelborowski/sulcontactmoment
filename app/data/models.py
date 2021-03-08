@@ -15,7 +15,7 @@ def datetime_to_dutch_date_string(date):
 
 # woensdag 24 februari om 14 uur
 def datetime_to_dutch_datetime_string(date):
-    date_string = f'{get_day_names(locale="nl")[date.weekday()]} {date.day} {get_month_names(locale="nl")[date.month]} om {date.strftime("%H.%M")}'
+    date_string = f'{get_day_names(locale="nl")[date.weekday()]} {date.day} {get_month_names(locale="nl")[date.month]} om {date.strftime("%H.%M")} uur'
     return date_string
 
 def datetime_to_formiodate(date):
@@ -183,6 +183,7 @@ class Timeslot(db.Model):
             'timeslot-date': self.date,
             'timeslot-meeting-url': self.meeting_url,
             'timeslot-enabled': self.enabled,
-            'timeslot-id': self.id
+            'timeslot-id': self.id,
+            'timeslot-action': 'V'
         }
 

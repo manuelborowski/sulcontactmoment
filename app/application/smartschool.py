@@ -8,7 +8,10 @@ def send_message(to_id, to_nbr_coaacount, subject, content):
         api_key = flask_app.config['SMARTSCHOOL_API_KEY']
 
         ret = soap.service.sendMsg(api_key, to_id, subject, content, from_id, '', to_nbr_coaacount, 0)
-        return bool(not ret)
+        if ret == 0:
+            return True
+        else:
+            log.error(f'send_message: ERROR, could not send message, returned: {ret}')
     except Exception as e:
         log.error(f'send_message: ERROR, could not send message: {e}')
     return False

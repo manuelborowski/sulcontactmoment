@@ -20,10 +20,11 @@ flask_app = Flask(__name__, instance_relative_config=True, template_folder='pres
 # V0.6: update nginx and smartschool oauth
 # V0.7: bugfix register
 # V0.8: bugfix
+# V0.9: settings update
 
 @flask_app.context_processor
 def inject_version():
-    return dict(version='V0.8')
+    return dict(version='V0.9')
 
 #enable logging
 LOG_HANDLE = 'SULCM'

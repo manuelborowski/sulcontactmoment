@@ -11,7 +11,7 @@ def get_default_values():
         for timeslot in timeslots:
             formio = timeslot.ret_formio()
             formio['timeslot-date'] = mutils.datetime_to_formiodate(formio['timeslot-date'])
-            timeslots_data.append(timeslot.formio)
+            timeslots_data.append(formio)
         ret = {
             'template': timeslot_template,
             'timeslots': timeslots_data
