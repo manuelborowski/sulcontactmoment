@@ -1,4 +1,6 @@
 var _form = null;
+var timeslot_component = null;
+
 $(document).ready(function () {
     socketio.start(null, null);
     socketio.subscribe_on_receive("settings", socketio_receive_settings);
@@ -11,9 +13,12 @@ $(document).ready(function () {
                 return;
             }
         });
+        timeslot_component = form.getComponent("timeslot-list");
+        timeslot_component.setValue(data.timeslots);
         form.on('submit', function(submission) {
             socketio_transmit_setting('data', JSON.stringify((submission.data)))
         })
+        $('.formio-component-panel [ref=header]').on('click', panel_header_clicked);
     });
 });
 
@@ -31,4 +36,13 @@ function socketio_receive_settings(type, data) {
 function socketio_transmit_setting(setting, value) {
     socketio.send_to_server('settings', {setting: setting, value: value});
     return false;
+}
+
+function panel_header_clicked(event) {
+    event.stopImmediatePropagation();
+    $("[ref=datagrid-timeslot-list-row]").on("change", function(e) {
+        var row_index = e.currentTarget.rowIndex;
+        timeslot_component.rows[row_index - 1]['timeslot-action'].setValue('U');
+    })
+    $('.formio-component-panel  [ref=header]').on('click', panel_header_clicked);
 }

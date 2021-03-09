@@ -163,9 +163,11 @@ class Registration(db.Model):
         }
 
     def ret_datatable(self):
-        return {
+        ret = self.timeslot.ret_formio()
+        ret.update({
             'id': self.id, 'DT_RowId': self.id
-        }
+        })
+        return ret
 
 
 class Timeslot(db.Model):

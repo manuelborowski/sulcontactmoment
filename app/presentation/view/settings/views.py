@@ -1,19 +1,22 @@
 from flask import render_template, url_for, request
 from flask_login import login_required
 from app import admin_required
-from app.application import socketio as msocketio, utils as mutils
+from app.application import socketio as msocketio, timeslot as mtimeslot
 from . import settings
 from app.application import settings as msettings
 import json
+
 
 @settings.route('/settings', methods=['GET', 'POST'])
 @admin_required
 @login_required
 def show():
     default_settings = msettings.get_configuration_settings()
+    timeslots = mtimeslot.get_timeslots()
     data = {
         'default': default_settings,
         'template': settings_formio,
+        'timeslots': timeslots,
     }
     return render_template('/settings/settings.html', data=data)
 
@@ -30,7 +33,6 @@ def update_settings_cb(msg, client_sid=None):
 
 
 msocketio.subscribe_on_type('settings', update_settings_cb)
-
 
 from app.presentation.view import false, true, null
 
@@ -129,6 +131,97 @@ settings_formio = \
                                 "key": "registration-timeslot-template",
                                 "type": "textarea",
                                 "input": true
+                            },
+                            {
+                                "label": "Tijdsloten",
+                                "reorder": false,
+                                "addAnotherPosition": "bottom",
+                                "defaultOpen": false,
+                                "layoutFixed": false,
+                                "enableRowGroups": false,
+                                "initEmpty": false,
+                                "tableView": false,
+                                "defaultValue": [
+                                    {}
+                                ],
+                                "key": "timeslot-list",
+                                "type": "datagrid",
+                                "input": true,
+                                "components": [
+                                    {
+                                        "label": "Tijdslot",
+                                        "format": "dd-MM-yyyy HH:mm",
+                                        "tableView": false,
+                                        "enableMinDateInput": false,
+                                        "datePicker": {
+                                            "disableWeekends": false,
+                                            "disableWeekdays": false
+                                        },
+                                        "enableMaxDateInput": false,
+                                        "timePicker": {
+                                            "showMeridian": false,
+                                            "minuteStep": 15
+                                        },
+                                        "persistent": false,
+                                        "key": "timeslot-date",
+                                        "type": "datetime",
+                                        "input": true,
+                                        "widget": {
+                                            "type": "calendar",
+                                            "displayInTimezone": "viewer",
+                                            "locale": "en",
+                                            "useLocaleSettings": false,
+                                            "allowInput": true,
+                                            "mode": "single",
+                                            "enableTime": true,
+                                            "noCalendar": false,
+                                            "format": "dd-MM-yyyy HH:mm",
+                                            "hourIncrement": 1,
+                                            "minuteIncrement": 15,
+                                            "time_24hr": true,
+                                            "minDate": null,
+                                            "disableWeekends": false,
+                                            "disableWeekdays": false,
+                                            "maxDate": null
+                                        }
+                                    },
+                                    {
+                                        "label": "Meeting URL",
+                                        "tableView": true,
+                                        "key": "timeslot-meeting-url",
+                                        "type": "textfield",
+                                        "input": true
+                                    },
+                                    {
+                                        "label": "Actief",
+                                        "tableView": false,
+                                        "key": "timeslot-enabled",
+                                        "type": "checkbox",
+                                        "input": true,
+                                        "defaultValue": false
+                                    },
+                                    {
+                                        "label": "Number",
+                                        "hidden": true,
+                                        "mask": false,
+                                        "spellcheck": true,
+                                        "tableView": false,
+                                        "delimiter": false,
+                                        "requireDecimal": false,
+                                        "inputFormat": "plain",
+                                        "key": "timeslot-id",
+                                        "type": "number",
+                                        "input": true
+                                    },
+                                    {
+                                        "label": "Action",
+                                        "defaultValue": "N",
+                                        "key": "timeslot-action",
+                                        "type": "hidden",
+                                        "input": true,
+                                        "tableView": false
+                                    }
+                                ]
                             }
                         ],
                         "collapsed": true

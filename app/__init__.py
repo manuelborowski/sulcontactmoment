@@ -21,10 +21,11 @@ flask_app = Flask(__name__, instance_relative_config=True, template_folder='pres
 # V0.7: bugfix register
 # V0.8: bugfix
 # V0.9: settings update
+# V0.10: added dashboard link.  Settings are ok, added registration overview
 
 @flask_app.context_processor
 def inject_version():
-    return dict(version='V0.9')
+    return dict(version='V0.10')
 
 #enable logging
 LOG_HANDLE = 'SULCM'
@@ -123,14 +124,13 @@ else:
             return func(*args, **kwargs)
         return decorated_view
 
-    from app.presentation.view import auth, user, settings, end_user, timeslot, test
+    from app.presentation.view import auth, user, settings, end_user, timeslot, test, registration
     flask_app.register_blueprint(auth.auth)
     flask_app.register_blueprint(user.user)
     flask_app.register_blueprint(end_user.end_user)
     flask_app.register_blueprint(settings.settings)
     flask_app.register_blueprint(timeslot.timeslot)
-    # flask_app.register_blueprint(reservation.reservation)
-    # flask_app.register_blueprint(test.test)
+    flask_app.register_blueprint(registration.registration)
 
     @flask_app.errorhandler(403)
     def forbidden(error):

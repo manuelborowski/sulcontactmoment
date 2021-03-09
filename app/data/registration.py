@@ -1,6 +1,6 @@
 from app import db, log
 from app.data import utils as mutils, timeslot as mtimeslot
-from app.data.models import Registration
+from app.data.models import Registration, Timeslot
 import json
 
 
@@ -86,5 +86,18 @@ def get_first_registration(student_id=None, ack_sent=None, enabled=None):
     return get_registrations(student_id=student_id, ack_sent=ack_sent, enabled=enabled, first=True)
 
 
-def format_timeslot_data():
-    pass
+
+def pre_filter():
+    return Registration.query.join(Timeslot)
+
+def format_data(db_list):
+    out = []
+    for i in db_list:
+        em = json.loads(i.data)
+        em.update(i.ret_datatable())
+        em['timeslot-date'] = mutils.datetime_to_dutch_datetime_string(em['timeslot-date'])
+        em['timeslot-meeting-url'] = f'<a href="{em["timeslot-meeting-url"]}" target="_blank">Link naar meeting</a>'
+        em['row_action'] = f"{i.id}"
+        out.append(em)
+    return out
+

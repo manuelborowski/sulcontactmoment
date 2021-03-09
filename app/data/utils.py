@@ -16,6 +16,11 @@ def datetime_to_formiodate(date):
     return string
 
 
+def formiodate_to_datetime(formio_date):
+    date = datetime.datetime.strptime(':'.join(formio_date.split(':')[:2]), '%Y-%m-%dT%H:%M')
+    return date
+
+
 def raise_error(message, details=None):
     error = Exception(f'm({message}), d({details}), td({type(details).__name__})')
     raise error
