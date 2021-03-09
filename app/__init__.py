@@ -22,10 +22,11 @@ flask_app = Flask(__name__, instance_relative_config=True, template_folder='pres
 # V0.8: bugfix
 # V0.9: settings update
 # V0.10: added dashboard link.  Settings are ok, added registration overview
+# V0.11: registration via smartschool.  Users are not allowed to delete registrations.
 
 @flask_app.context_processor
 def inject_version():
-    return dict(version='V0.10')
+    return dict(version='V0.11')
 
 #enable logging
 LOG_HANDLE = 'SULCM'

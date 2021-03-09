@@ -63,9 +63,11 @@ def update_registration(registration, timeslot=None, ack_send_retry=None):
         mutils.raise_error('could not update registration', e)
 
 
-def get_registrations(student_id=None, ack_sent=None, enabled=None, first=False):
+def get_registrations(id=None, student_id=None, ack_sent=None, enabled=None, first=False):
     try:
         registrations = Registration.query
+        if id:
+            registrations = registrations.filter(Registration.id == id)
         if student_id:
             registrations = registrations.filter(Registration.student_id == student_id)
         if ack_sent is not None:
@@ -82,8 +84,21 @@ def get_registrations(student_id=None, ack_sent=None, enabled=None, first=False)
     return None
 
 
-def get_first_registration(student_id=None, ack_sent=None, enabled=None):
-    return get_registrations(student_id=student_id, ack_sent=ack_sent, enabled=enabled, first=True)
+def get_first_registration(id=None, student_id=None, ack_sent=None, enabled=None):
+    return get_registrations(id=id, student_id=student_id, ack_sent=ack_sent, enabled=enabled, first=True)
+
+
+def delete_registrations(id=None, id_list=None):
+    try:
+        if id:
+            id_list = [id]
+        for i in id_list:
+            registration = get_first_registration(id=int(i))
+            db.session.delete(registration)
+        db.session.commit()
+    except Exception as e:
+        mutils.raise_error('could not remove registrations', e)
+    return []
 
 
 

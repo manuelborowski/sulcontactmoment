@@ -103,3 +103,7 @@ def add_or_update_registration(data):
         log.error(f'Could not add or update registration {e}')
         return RegisterResult(RegisterResult.Result.E_COULD_NOT_REGISTER)
     return RegisterResult(RegisterResult.Result.E_ERROR)
+
+
+def delete_registration(id_list):
+    return mregistration.delete_registrations(id_list=id_list)
